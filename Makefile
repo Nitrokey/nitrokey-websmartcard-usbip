@@ -1,5 +1,4 @@
-APPNAME=usbip-simulation
-APPPATH=target/debug/usbip-simulation
+APPNAME=udp_sim
 FLAGS=--features=enable-logs
 
 all: | start-sim attach finish-message
@@ -12,8 +11,12 @@ finish-message:
 .PHONY: start-sim
 start-sim: $(APPNAME)
 	-$(MAKE) stop
-	env RUST_LOG=debug cargo run $(FLAGS) &
+	env RUST_LOG=debug RUST_BACKTRACE=1 cargo run $(FLAGS) &
 	sleep 1
+
+.PHONY: autoattach
+autoattach:
+	 while true; do $(MAKE) attach; sleep 1; inotifywait ${CARGO_TARGET_DIR}/debug/usbip-simulation; sleep 5; done;
 
 .PHONY: attach
 attach: 
@@ -22,6 +25,8 @@ attach:
 	sudo usbip attach -r "localhost" -b "1-1"
 	sudo usbip attach -r "localhost" -b "1-1"
 	sleep 5
+	-notify-send 'Webcrypt USB/IP' 'Attached'
+
 
 .PHONY: ci
 ci:
@@ -40,7 +45,7 @@ $(APPNAME):
 .PHONY: stop
 stop:
 	-sudo usbip detach -p "00"
-	killall $(APPNAME)
+	killall $(APPNAME) usbip-simulation
 
 .PHONY: setup-fedora
 setup-fedora:

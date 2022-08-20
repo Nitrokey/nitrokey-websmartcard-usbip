@@ -9,11 +9,16 @@ use interchange::Interchange;
 use usb_device::{bus::UsbBusAllocator, prelude::*};
 use usbip_device::UsbIpBus;
 
+#[cfg(feature = "enable-logs")]
+use pretty_env_logger;
+
 use fido_authenticator;
-use solo_usbip::platform::{init_platform, Platform};
 use usbd_ctaphid::constants::MESSAGE_SIZE;
+use webcrypt::Webcrypt;
 
 pub type FidoConfig = fido_authenticator::Config;
+
+use webcrypt_usbip::platform::{init_platform, Platform};
 
 /// USP/IP based virtualization of the Nitrokey 3 / Solo2 device.
 /// Supports FIDO application at the moment.
@@ -84,6 +89,7 @@ impl trussed::client::Syscall for Syscall {
     }
 }
 
+
 fn main() {
     #[cfg(feature = "enable-logs")]
     pretty_env_logger::init();
@@ -127,6 +133,12 @@ fn main() {
 
     let trussed_client = trussed_service
         .borrow_mut()
+        .try_new_client("webcrypt", syscall.clone())
+        .unwrap();
+    let mut webcrypt = Webcrypt::new(trussed_client);
+
+    let trussed_client = trussed_service
+        .borrow_mut()
         .try_new_client("fido", syscall.clone())
         .unwrap();
     let mut fido_app = fido_authenticator::Authenticator::new(
@@ -146,7 +158,7 @@ fn main() {
     log::info!("Ready for work");
     loop {
         std::thread::sleep(std::time::Duration::from_millis(5));
-        ctaphid_dispatch.poll(&mut [&mut fido_app, &mut admin_app]);
+        ctaphid_dispatch.poll(&mut [&mut webcrypt, &mut fido_app, &mut admin_app]);
         usb_bus.poll(&mut [&mut ctaphid]);
     }
 }

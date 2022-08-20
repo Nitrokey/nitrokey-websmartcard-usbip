@@ -1,4 +1,14 @@
-# USB/IP Simulation
+# USB/IP Simulation for Webcrypt
+
+This is a modified USB/IP runner to use Nitrokey Webcrypt as an additional CTAP application. It is based on the older implementation of the PC USB/IP runner:
+- https://github.com/trussed-dev/pc-usbip-runner 
+
+See `nitrokey-webcrypt` tag on GitHub for the associated projects:
+- https://github.com/topics/nitrokey-webcrypt
+
+Original README follows.
+
+------------------
 
 This runner allows using USB/IP as a means to simulate device connection
 to the OS, and should allow faster development of the embedded applications.
