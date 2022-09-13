@@ -57,7 +57,7 @@ log-warn = []
 log-error = []
 
 [patch.crates-io]
-trussed = { git = "https://github.com/Nitrokey/trussed.git", branch="sz-unsafe-inject-any-key" }
+trussed = { git = "https://github.com/Nitrokey/trussed.git", branch="webcrypt-devel" }
 ctaphid-dispatch = { git = "https://github.com/Nitrokey/ctaphid-dispatch.git", branch="multiple_apps" }
 apdu-dispatch = { git = "https://github.com/Nitrokey/apdu-dispatch.git", branch="sz-multiple-apps" }
 usbip-device = { git = "https://github.com/sawchord/usbip-device", rev = "4c4de04" }

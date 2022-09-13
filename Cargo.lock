@@ -1290,7 +1290,7 @@ checksum = "b1141d4d61095b28419e22cb0bbf02755f5e54e0526f97f1e3d1d160e60885fb"
 [[package]]
 name = "trussed"
 version = "0.1.0"
-source = "git+https://github.com/Nitrokey/trussed.git?branch=sz-unsafe-inject-any-key#45d2ce3cc9b6afbf9164a3073e19e9737b681700"
+source = "git+https://github.com/Nitrokey/trussed.git?branch=webcrypt-devel#0535b305b34763f77df7eda7517859b5ad7c8853"
 dependencies = [
  "aes",
  "bitflags",
@@ -1375,8 +1375,7 @@ dependencies = [
 [[package]]
 name = "usbip-device"
 version = "0.1.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d7360c60ef8f529275589238b51de334ecf76aac0bffc2a2638414bc9da09731"
+source = "git+https://github.com/sawchord/usbip-device?rev=4c4de04#4c4de049b4c216b7337d3611f891f97c9f7e7ef3"
 dependencies = [
  "bitflags",
  "log",
