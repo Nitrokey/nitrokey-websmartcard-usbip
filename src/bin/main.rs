@@ -13,8 +13,9 @@ use usbip_device::UsbIpBus;
 use pretty_env_logger;
 
 use fido_authenticator;
+use trussed::types::ClientContext;
 use usbd_ctaphid::constants::MESSAGE_SIZE;
-use webcrypt::Webcrypt;
+use webcrypt::{Webcrypt};
 
 pub type FidoConfig = fido_authenticator::Config;
 
@@ -133,7 +134,11 @@ fn main() {
 
     let trussed_client = trussed_service
         .borrow_mut()
-        .try_new_client("webcrypt", syscall.clone())
+        .try_new_client_ctx(syscall.clone(),
+                            ClientContext::new(
+                                littlefs2::path::PathBuf::from("webcrypt"),
+                                Some("1234"), // FIXME replace with DEFAULT_ENCRYPTION_PIN
+                            ))
         .unwrap();
     let mut webcrypt = Webcrypt::new(trussed_client);
 
