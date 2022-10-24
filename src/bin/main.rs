@@ -13,8 +13,13 @@ use usbip_device::UsbIpBus;
 use pretty_env_logger;
 
 use fido_authenticator;
+
+#[cfg(feature = "webcrypt_app")]
 use trussed::types::ClientContext;
+
 use usbd_ctaphid::constants::MESSAGE_SIZE;
+
+#[cfg(feature = "webcrypt_app")]
 use webcrypt::{Webcrypt};
 
 pub type FidoConfig = fido_authenticator::Config;
@@ -132,6 +137,7 @@ fn main() {
         service: trussed_service.clone(),
     };
 
+    #[cfg(feature = "webcrypt_app")]{
     let trussed_client = trussed_service
         .borrow_mut()
         .try_new_client_ctx(syscall.clone(),
@@ -141,6 +147,7 @@ fn main() {
                             ))
         .unwrap();
     let mut webcrypt = Webcrypt::new(trussed_client);
+    }
 
     let trussed_client = trussed_service
         .borrow_mut()
@@ -163,7 +170,12 @@ fn main() {
     log::info!("Ready for work");
     loop {
         std::thread::sleep(std::time::Duration::from_millis(5));
-        ctaphid_dispatch.poll(&mut [&mut webcrypt, &mut fido_app, &mut admin_app]);
+        ctaphid_dispatch.poll(&mut [
+            #[cfg(feature = "webcrypt_app")]
+            &mut webcrypt,
+            &mut fido_app,
+            &mut admin_app,
+        ]);
         usb_bus.poll(&mut [&mut ctaphid]);
     }
 }

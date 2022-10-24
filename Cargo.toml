@@ -41,7 +41,8 @@ pretty_env_logger = { version = "0.4.0", optional = true }
 
 [features]
 default = ["no-buttons"]
-enable-logs = ["pretty_env_logger", "admin-app/log-all", "fido-authenticator/log-all", "webcrypt/enable-logs"]
+webcrypt_app = ["webcrypt", "webcrypt/enable-logs"]
+enable-logs = ["pretty_env_logger", "admin-app/log-all", "fido-authenticator/log-all"]
 
 # Use to auto-succeed every user presence check
 no-buttons = []
