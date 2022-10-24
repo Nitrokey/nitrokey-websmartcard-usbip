@@ -23,11 +23,13 @@ ctap-types = "0.1"
 ctaphid-dispatch = "0.1"
 admin-app = "0.1"
 fido-authenticator = { version = "0.1", features = ["dispatch"] }
-trussed = { version = "0.1", features = ["clients-5"] }
+trussed = { version = "0.1", features = ["clients-6"] }
+
+oath-authenticator = "0.1.0"
 
 # components
 usbd-ctaphid = { path = "components/usbd-ctaphid" }
-webcrypt = { git = "https://github.com/Nitrokey/nitrokey-webcrypt-rust.git", branch="main" }
+webcrypt = { git = "https://github.com/Nitrokey/nitrokey-webcrypt-rust.git", branch="main", optional = true }
 
 # storage
 littlefs2 = "0.3.1"
@@ -40,7 +42,7 @@ usb-device = { version = "0.2.7", default-features = false }
 pretty_env_logger = { version = "0.4.0", optional = true }
 
 [features]
-default = ["no-buttons"]
+default = ["no-buttons", "oath-authenticator/log-all"]
 webcrypt_app = ["webcrypt", "webcrypt/enable-logs"]
 enable-logs = ["pretty_env_logger", "admin-app/log-all", "fido-authenticator/log-all"]
 
@@ -58,7 +60,7 @@ log-warn = []
 log-error = []
 
 [patch.crates-io]
-trussed = { git = "https://github.com/Nitrokey/trussed.git", branch="webcrypt-devel" }
+oath-authenticator = { git = "https://github.com/Nitrokey/oath-authenticator", branch="ctaphid"}
 ctaphid-dispatch = { git = "https://github.com/Nitrokey/ctaphid-dispatch.git", branch="multiple_apps" }
 apdu-dispatch = { git = "https://github.com/Nitrokey/apdu-dispatch.git", branch="sz-multiple-apps" }
 usbip-device = { git = "https://github.com/sawchord/usbip-device", rev = "4c4de04" }

@@ -167,6 +167,12 @@ fn main() {
         .unwrap();
     let mut admin_app = admin_app::App::<_, Reboot>::new(trussed_client, [0; 16], 0);
 
+    let trussed_client = trussed_service
+        .borrow_mut()
+        .try_new_client("otp", syscall.clone())
+        .unwrap();
+    let mut otp_app = oath_authenticator::Authenticator::new(trussed_client);
+
     log::info!("Ready for work");
     loop {
         std::thread::sleep(std::time::Duration::from_millis(5));
@@ -175,6 +181,7 @@ fn main() {
             &mut webcrypt,
             &mut fido_app,
             &mut admin_app,
+            &mut otp_app
         ]);
         usb_bus.poll(&mut [&mut ctaphid]);
     }
