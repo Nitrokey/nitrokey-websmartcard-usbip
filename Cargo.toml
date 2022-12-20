@@ -25,7 +25,7 @@ admin-app = "0.1"
 fido-authenticator = { version = "0.1", features = ["dispatch"] }
 trussed = { version = "0.1", features = ["clients-6"] }
 
-oath-authenticator = "0.1.0"
+oath-authenticator = { path = "components/oath-authenticator", features = ["ctaphid"] }
 
 # components
 usbd-ctaphid = { path = "components/usbd-ctaphid" }
@@ -60,7 +60,9 @@ log-warn = []
 log-error = []
 
 [patch.crates-io]
-oath-authenticator = { git = "https://github.com/Nitrokey/oath-authenticator", branch="ctaphid"}
+#oath-authenticator = { git = "https://github.com/Nitrokey/oath-authenticator", branch="ctaphid"}
+oath-authenticator = { path = "components/oath-authenticator" }
 ctaphid-dispatch = { git = "https://github.com/Nitrokey/ctaphid-dispatch.git", branch="multiple_apps" }
 apdu-dispatch = { git = "https://github.com/Nitrokey/apdu-dispatch.git", branch="sz-multiple-apps" }
 usbip-device = { git = "https://github.com/sawchord/usbip-device", rev = "4c4de04" }
+trussed = { git = "https://github.com/trussed-dev/trussed", rev = "3da56d8" }
