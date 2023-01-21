@@ -25,7 +25,7 @@ admin-app = "0.1"
 fido-authenticator = { version = "0.1", features = ["dispatch"] }
 trussed = { version = "0.1", features = ["clients-6"] }
 
-oath-authenticator = { path = "components/oath-authenticator", features = ["ctaphid"] }
+oath-authenticator = "*"
 
 # components
 usbd-ctaphid = { path = "components/usbd-ctaphid" }
@@ -42,7 +42,7 @@ usb-device = { version = "0.2.7", default-features = false }
 pretty_env_logger = { version = "0.4.0", optional = true }
 
 [features]
-default = ["no-buttons", "oath-authenticator/log-all"]
+default = ["no-buttons", "oath-authenticator/log-all", "oath-authenticator/ctaphid", "oath-authenticator/devel"]
 webcrypt_app = ["webcrypt", "webcrypt/enable-logs"]
 enable-logs = ["pretty_env_logger", "admin-app/log-all", "fido-authenticator/log-all"]
 
@@ -65,4 +65,5 @@ oath-authenticator = { path = "components/oath-authenticator" }
 ctaphid-dispatch = { git = "https://github.com/Nitrokey/ctaphid-dispatch.git", branch="multiple_apps" }
 apdu-dispatch = { git = "https://github.com/Nitrokey/apdu-dispatch.git", branch="sz-multiple-apps" }
 usbip-device = { git = "https://github.com/sawchord/usbip-device", rev = "4c4de04" }
-trussed = { git = "https://github.com/trussed-dev/trussed", rev = "3da56d8" }
+# trussed = { git = "https://github.com/trussed-dev/trussed", rev = "3da56d8" }
+

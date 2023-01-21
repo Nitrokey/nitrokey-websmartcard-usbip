@@ -1336,7 +1336,8 @@ checksum = "b1141d4d61095b28419e22cb0bbf02755f5e54e0526f97f1e3d1d160e60885fb"
 [[package]]
 name = "trussed"
 version = "0.1.0"
-source = "git+https://github.com/trussed-dev/trussed?rev=3da56d8#3da56d8e41b9de64b852ed2bdcfd623118b09c3d"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f7173399ed80afefa978da6c601d9712d1de03f7c6e2b9d4630addfcc0598f5e"
 dependencies = [
  "aes",
  "bitflags",
@@ -1421,7 +1422,7 @@ dependencies = [
 [[package]]
 name = "usbd-ctaphid"
 version = "0.0.0-unreleased"
-source = "git+https://github.com/Nitrokey/nitrokey-3-firmware#097386402abc73ebfd579f4bdf9a621d8cf0a61d"
+source = "git+https://github.com/Nitrokey/nitrokey-3-firmware#c02188a6853a93bdaee2e673d282e621db2c1789"
 dependencies = [
  "ctap-types",
  "ctaphid-dispatch",

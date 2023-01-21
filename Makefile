@@ -49,7 +49,9 @@ stop:
 
 .PHONY: setup-fedora
 setup-fedora:
-	sudo dnf install usbip clang-libs-13.0.0
+	sudo dnf install usbip
+	sudo dnf install fuse-devel
+	sudo dnf install clang-libs-13.0.0
 	sudo ln -s /usr/lib64/libclang.so.13 /usr/lib64/libclang.so
 
 .PHONY: clean
@@ -64,3 +66,23 @@ build-docker:
 	mkdir -p cargo-cache
 	docker run -it --rm -v $(PWD)/cargo-cache:/root/.cargo -v $(PWD)/../../:/app usbip $(CMD)
 	touch $(APPNAME)
+
+fs=./trussed-state.bin
+mount=/tmp/mnt/bee
+state=mount.state
+
+.PHONY: mount umount
+mount:
+	# https://github.com/littlefs-project/littlefs-fuse#usage-on-linux
+	mkdir -p $(mount)
+	lsmod | grep loop || sudo modprobe loop
+	sudo losetup --find --show $(fs) | tee loop.dev
+	sudo chmod a+rw `cat loop.dev`
+	lfs --block_count=128 `cat loop.dev` $(mount)
+	printf "loop_device=`cat loop.dev`\nmount=$(mount)" > $(state)
+	tree -h $(mount)
+
+umount:
+	umount $(mount)
+	sudo losetup -d `cat loop.dev`
+	rm $(state)
