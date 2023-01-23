@@ -25,7 +25,7 @@ admin-app = "0.1"
 fido-authenticator = { version = "0.1", features = ["dispatch"] }
 trussed = { version = "0.1", features = ["clients-6"] }
 
-oath-authenticator = "*"
+oath-authenticator = { path = "components/oath-authenticator", features = ["ctaphid", "devel"] }
 
 # components
 usbd-ctaphid = { path = "components/usbd-ctaphid" }
