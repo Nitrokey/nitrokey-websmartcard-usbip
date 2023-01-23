@@ -67,22 +67,31 @@ build-docker:
 	docker run -it --rm -v $(PWD)/cargo-cache:/root/.cargo -v $(PWD)/../../:/app usbip $(CMD)
 	touch $(APPNAME)
 
+
+LFS=./tmp/littlefs-fuse/lfs
+$(LFS):
+	mkdir -p tmp
+	-cd tmp && git clone https://github.com/littlefs-project/littlefs-fuse
+	cd tmp/littlefs-fuse && make
+
 fs=./trussed-state.bin
 mount=/tmp/mnt/bee
 state=mount.state
 
 .PHONY: mount umount
-mount:
+mount: $(LFS)
 	# https://github.com/littlefs-project/littlefs-fuse#usage-on-linux
 	mkdir -p $(mount)
 	lsmod | grep loop || sudo modprobe loop
 	sudo losetup --find --show $(fs) | tee loop.dev
-	sudo chmod a+rw `cat loop.dev`
-	lfs --block_count=128 `cat loop.dev` $(mount)
+	grep "/dev/loop" loop.dev && sudo chmod a+rw `cat loop.dev`
+	$(LFS) --block_count=128 `cat loop.dev` $(mount)
 	printf "loop_device=`cat loop.dev`\nmount=$(mount)" > $(state)
-	tree -h $(mount)
+	tree -C -h $(mount)
 
 umount:
-	umount $(mount)
+	-umount $(mount)
 	sudo losetup -d `cat loop.dev`
-	rm $(state)
+	rm ./$(state)
+
+
